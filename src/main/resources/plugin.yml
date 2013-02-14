@@ -1,0 +1,5 @@
+name: ItemsOnAnything
+main: de.dustplanet.itemsonanything.ItemsOnAnything
+author: xGhOsTkiLLeRx
+website: ???
+version: ${project.version}-b${BUILD_NUMBER}
