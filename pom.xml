@@ -79,7 +79,7 @@
 							<relocations>
 								<relocation>
 									<pattern>org.mcstats</pattern>
-									<shadedPattern>de.dustplanet.colorme</shadedPattern>
+									<shadedPattern>de.dustplanet.itemsonanything</shadedPattern>
 								</relocation>
 							</relocations>
 						</configuration>
