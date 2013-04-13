@@ -46,8 +46,14 @@ public class ItemsOnAnything extends JavaPlugin {
 	if (!configFile.exists()) {
 	    if (configFile.getParentFile().mkdirs()) {
 		copy(getResource("config.yml"), configFile);
+	    } else {
+		getLogger().severe("The config folder could NOT be created, make sure it's writable!");
+		getLogger().severe("Disabling now!");
+		setEnabled(false);
+		return;
 	    }
 	}
+	
 	config = getConfig();
 	loadConfig();
 
@@ -61,12 +67,10 @@ public class ItemsOnAnything extends JavaPlugin {
 	    for (int i = 0; i < stats.size(); i++) {
 		final String name = stats.get(i);
 		metrics.addCustomData(new Metrics.Plotter() {
-		    @Override
 		    public String getColumnName() {
 			return name;
 		    }
 
-		    @Override
 		    public int getValue() {
 			return 1;
 		    }

@@ -15,7 +15,7 @@ import org.bukkit.material.Ladder;
 import org.bukkit.material.Lever;
 
 /**
- * BlocksOnGlass for CraftBukkit/Bukkit
+ * ItemsOnAnything for CraftBukkit/Bukkit
  * Handles the permission check for each block/item
  * 
  * Refer to the forum thread:
@@ -75,8 +75,7 @@ public class ItemsOnAnythingPlayerListener implements Listener {
 	}
 	if (item.getAmount() == 0) {
 	    player.setItemInHand(null);
-	}
-	else {
+	} else {
 	    item.setAmount((item.getAmount() - 1));
 	    player.setItemInHand(item);
 	}
