@@ -34,10 +34,13 @@ public class ItemsOnAnythingPlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-	if ((event.getAction() == Action.RIGHT_CLICK_AIR) && event.hasItem()) {
+	if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.hasItem()) {
+	    System.out.println("BLOCK :D");
+	}
+	if (Util.checkEvent(event)) {
 	    Player player = event.getPlayer();
 	    List<Block> lastTwoTargetBlocks = player.getLastTwoTargetBlocks(null, 5);
-	    Block previousBlock = lastTwoTargetBlocks.get(0);
+	    final Block previousBlock = lastTwoTargetBlocks.get(0);
 	    Block targetBlock = lastTwoTargetBlocks.get(1);
 	    System.out.println("Block 1: " + previousBlock.getType().name());
 	    System.out.println("Block 2: " + targetBlock.getType().name());
@@ -46,6 +49,11 @@ public class ItemsOnAnythingPlayerListener implements Listener {
 		ItemStack item = event.getItem();
 		Material type = item.getType();
 		if (plugin.items.contains(type.name())) {
+		    System.out.println("true so far " + type.name());
+		    // We need to edit some items to a block
+		    // Special item <-> block conversion
+		    // TODO --> Util
+		    type = Util.translateItemToBlock(type);
 		    previousBlock.setType(type);
 		    // Special case is a lever, we have to adjust the bit values (facing)
 		    // Reference: http://www.minecraftwiki.net/wiki/Data_values#Levers
@@ -88,10 +96,37 @@ public class ItemsOnAnythingPlayerListener implements Listener {
 			    break;
 			default:
 			    break;
-			    
 			}
+		    } else if (type == Material.STONE_BUTTON || type == Material.WOOD_BUTTON) {
+			// Special case is a button, we have to adjust the bit values (facing)
+			// Reference: http://www.minecraftwiki.net/wiki/Data_values#Buttons
+			// Ladders can't be placed if the face is UP or DOWN
+			if (face == BlockFace.UP || face == BlockFace.DOWN) {
+			    previousBlock.setType(Material.AIR);
+			    return;
+			}
+			BlockFace playerDirection = Util.yawToFace(player.getLocation().getYaw());
+			switch (playerDirection) {
+			case EAST:
+			    previousBlock.setData((byte) 0x1);
+			    break;
+			case NORTH:
+			    previousBlock.setData((byte) 0x4);
+			    break;
+			case SOUTH:
+			    previousBlock.setData((byte) 0x3);
+			    break;
+			case WEST:
+			    previousBlock.setData((byte) 0x2);
+			    break;
+			default:
+			    break;
+			}
+		    } else if (type == Material.SAPLING || type == Material.LONG_GRASS) {
+			// We have to respect the different types of saplings/long grass
+			previousBlock.setData((byte) item.getDurability());
 		    }
-		    
+
 		}
 		decreaseItem(player, item);
 	    }

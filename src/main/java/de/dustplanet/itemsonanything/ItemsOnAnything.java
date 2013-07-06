@@ -105,9 +105,15 @@ public class ItemsOnAnything extends JavaPlugin {
 	items.add("DIODE_BLOCK_ON");
 	items.add("TRAP_DOOR");
 	items.add("SNOW");
-	items.add("THIN_GLASS");
-	items.add("IRON_FENCE");
-	items.add("LADDER");
+	items.add("WOOD_BUTTON");
+	items.add("FLOWER_POT");
+	items.add("FLOWER_POT_ITEM");
+	items.add("REDSTONE_COMPARATOR");
+	items.add("REDSTONE_COMPARATOR_ON");
+	items.add("REDSTONE_COMPARATOR_OFF");
+	items.add("TRIPWIRE_HOOK");
+	items.add("GOLD_PLATE");
+	items.add("IRON_PLATE");
 	if (config.getBoolean("botanical")) {
 	    items.add("RED_MUSHROOM");
 	    items.add("BROWN_MUSHROOM");
@@ -116,6 +122,16 @@ public class ItemsOnAnything extends JavaPlugin {
 	    items.add("CACTUS");
 	    items.add("WATER_LILY");
 	    items.add("DEAD_BUSH");
+	    items.add("LONG_GRASS");
+	    items.add("SAPLING");
+	    items.add("MELON_SEEDS");
+	    items.add("MELON_STEM");
+	    items.add("PUMPKIN_SEEDS");
+	    items.add("PUMPKIN_STEM");
+	    items.add("NETHER_WARTS");
+	    items.add("NETHER_STALK");
+	    items.add("SUGAR_CANE");
+	    items.add("SUGAR_CANE_BLOCK");
 	}
     }
 
