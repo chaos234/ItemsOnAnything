@@ -8,7 +8,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -34,9 +33,6 @@ public class ItemsOnAnythingPlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-	if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.hasItem()) {
-	    System.out.println("BLOCK :D");
-	}
 	if (Util.checkEvent(event)) {
 	    Player player = event.getPlayer();
 	    List<Block> lastTwoTargetBlocks = player.getLastTwoTargetBlocks(null, 5);
@@ -49,15 +45,14 @@ public class ItemsOnAnythingPlayerListener implements Listener {
 		ItemStack item = event.getItem();
 		Material type = item.getType();
 		if (plugin.items.contains(type.name())) {
-		    System.out.println("true so far " + type.name());
 		    // We need to edit some items to a block
-		    // Special item <-> block conversion
-		    // TODO --> Util
 		    type = Util.translateItemToBlock(type);
 		    previousBlock.setType(type);
-		    // Special case is a lever, we have to adjust the bit values (facing)
-		    // Reference: http://www.minecraftwiki.net/wiki/Data_values#Levers
+		    
+		    // Check for manual fixes
 		    if (type == Material.LEVER) {
+			// Special case is a lever, we have to adjust the bit values (facing)
+			// Reference: http://www.minecraftwiki.net/wiki/Data_values#Levers
 			BlockFace playerDirection = Util.yawToFace(player.getLocation().getYaw());
 			if (playerDirection == BlockFace.SOUTH || playerDirection == BlockFace.NORTH) {
 			    if (face == BlockFace.UP) {
@@ -127,7 +122,7 @@ public class ItemsOnAnythingPlayerListener implements Listener {
 			previousBlock.setData((byte) item.getDurability());
 		    } else if (type == Material.REDSTONE_COMPARATOR_OFF || type == Material.REDSTONE_COMPARATOR_ON
 			    || type == Material.DIODE_BLOCK_OFF || type == Material.DIODE_BLOCK_ON) {
-			// Special case is a button, we have to adjust the bit values (facing)
+			// Special case is a repeater or comparator, we have to adjust the bit values (facing)
 			// Reference: http://www.minecraftwiki.net/wiki/Data_values#Redstone_Repeater
 			BlockFace playerDirection = Util.yawToFace(player.getLocation().getYaw());
 			switch (playerDirection) {
@@ -147,7 +142,7 @@ public class ItemsOnAnythingPlayerListener implements Listener {
 			    break;
 			}
 		    } else if (type == Material.TRIPWIRE_HOOK) {
-			// Special case is a button, we have to adjust the bit values (facing)
+			// Special case is tripwire hook, we have to adjust the bit values (facing)
 			// Reference: http://www.minecraftwiki.net/wiki/Data_values#Tripwire_Hook
 			// Tripwire hook can't be placed if the face is UP or DOWN
 			if (face == BlockFace.UP || face == BlockFace.DOWN) {
@@ -172,6 +167,9 @@ public class ItemsOnAnythingPlayerListener implements Listener {
 			    break;
 			}
 		    } else if (type == Material.TRAP_DOOR) {
+			// Special case is a trap door, we have to adjust the bit values (facing)
+			// Reference: http://www.minecraftwiki.net/wiki/Data_values#Trapdoors
+			// We need to check for upper or lower half of the block and maybe add the "up" bit 0x8
 			BlockFace playerDirection = Util.yawToFace(player.getLocation().getYaw());
 			byte data = (byte) (previousBlock.getData() & 0x7);
 			switch (playerDirection) {
