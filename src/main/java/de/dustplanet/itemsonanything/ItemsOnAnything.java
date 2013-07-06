@@ -11,6 +11,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.configuration.file.*;
 import org.mcstats.Metrics;
+import org.mcstats.Metrics.Graph;
+import org.mcstats.Metrics.Plotter;
 
 /**
  * ItemsOnAnything for CraftBukkit/Bukkit
@@ -64,13 +66,9 @@ public class ItemsOnAnything extends JavaPlugin {
 	try {
 	    Metrics metrics = new Metrics(this);
 	    // Custom plotter for each item
-	    for (int i = 0; i < stats.size(); i++) {
-		final String name = stats.get(i);
-		metrics.addCustomData(new Metrics.Plotter() {
-		    public String getColumnName() {
-			return name;
-		    }
-
+	    Graph graph = metrics.createGraph("Enabled items");
+	    for (final String name: stats) {
+		graph.addPlotter(new Plotter(name) {
 		    public int getValue() {
 			return 1;
 		    }
