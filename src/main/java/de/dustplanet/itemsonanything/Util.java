@@ -1,7 +1,6 @@
 package de.dustplanet.itemsonanything;
 
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
