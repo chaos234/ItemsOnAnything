@@ -24,7 +24,7 @@ import org.mcstats.Metrics.Plotter;
 public class ItemsOnAnything extends JavaPlugin {
     private final ItemsOnAnythingPlayerListener playerListener = new ItemsOnAnythingPlayerListener(this);
     private final ItemsOnAnythingBlockListener blockListener = new ItemsOnAnythingBlockListener(this);
-    public List<org.bukkit.Material> items = new ArrayList<org.bukkit.Material>();
+    public List<String> items = new ArrayList<String>();
     private List<String> stats = new ArrayList<String>();
     public List<String> enabledBlocks = new ArrayList<String>();
     public FileConfiguration config;
@@ -82,40 +82,40 @@ public class ItemsOnAnything extends JavaPlugin {
     }
 
     private void setupBlockLists() {
-	items.add(org.bukkit.Material.POWERED_RAIL);
-	items.add(org.bukkit.Material.DETECTOR_RAIL);
-	items.add(org.bukkit.Material.TORCH);
-	items.add(org.bukkit.Material.LADDER);
-	items.add(org.bukkit.Material.RAILS);
-	items.add(org.bukkit.Material.LEVER);
-	items.add(org.bukkit.Material.STONE_PLATE);
-	items.add(org.bukkit.Material.WOOD_PLATE);
-	items.add(org.bukkit.Material.REDSTONE_TORCH_ON);
-	items.add(org.bukkit.Material.REDSTONE_TORCH_OFF);
-	items.add(org.bukkit.Material.REDSTONE_WIRE);
-	items.add(org.bukkit.Material.STONE_BUTTON);
-	items.add(org.bukkit.Material.WOODEN_DOOR);
-	items.add(org.bukkit.Material.WOOD_DOOR);
-	items.add(org.bukkit.Material.IRON_DOOR_BLOCK);
-	items.add(org.bukkit.Material.IRON_DOOR);
-	items.add(org.bukkit.Material.REDSTONE);
-	items.add(org.bukkit.Material.BED);
-	items.add(org.bukkit.Material.DIODE);
-	items.add(org.bukkit.Material.DIODE_BLOCK_OFF);
-	items.add(org.bukkit.Material.DIODE_BLOCK_ON);
-	items.add(org.bukkit.Material.TRAP_DOOR);
-	items.add(org.bukkit.Material.SNOW);
-	items.add(org.bukkit.Material.THIN_GLASS);
-	items.add(org.bukkit.Material.IRON_FENCE);
-	items.add(org.bukkit.Material.LADDER);
+	items.add("POWERED_RAIL");
+	items.add("DETECTOR_RAIL");
+	items.add("TORCH");
+	items.add("LADDER");
+	items.add("RAILS");
+	items.add("LEVER");
+	items.add("STONE_PLATE");
+	items.add("WOOD_PLATE");
+	items.add("REDSTONE_TORCH_ON");
+	items.add("REDSTONE_TORCH_OFF");
+	items.add("REDSTONE_WIRE");
+	items.add("STONE_BUTTON");
+	items.add("WOODEN_DOOR");
+	items.add("WOOD_DOOR");
+	items.add("IRON_DOOR_BLOCK");
+	items.add("IRON_DOOR");
+	items.add("REDSTONE");
+	items.add("BED");
+	items.add("DIODE");
+	items.add("DIODE_BLOCK_OFF");
+	items.add("DIODE_BLOCK_ON");
+	items.add("TRAP_DOOR");
+	items.add("SNOW");
+	items.add("THIN_GLASS");
+	items.add("IRON_FENCE");
+	items.add("LADDER");
 	if (config.getBoolean("botanical")) {
-	    items.add(org.bukkit.Material.RED_MUSHROOM);
-	    items.add(org.bukkit.Material.BROWN_MUSHROOM);
-	    items.add(org.bukkit.Material.YELLOW_FLOWER);
-	    items.add(org.bukkit.Material.RED_ROSE);
-	    items.add(org.bukkit.Material.CACTUS);
-	    items.add(org.bukkit.Material.WATER_LILY);
-	    items.add(org.bukkit.Material.DEAD_BUSH);
+	    items.add("RED_MUSHROOM");
+	    items.add("BROWN_MUSHROOM");
+	    items.add("YELLOW_FLOWER");
+	    items.add("RED_ROSE");
+	    items.add("CACTUS");
+	    items.add("WATER_LILY");
+	    items.add("DEAD_BUSH");
 	}
     }
 
@@ -123,6 +123,7 @@ public class ItemsOnAnything extends JavaPlugin {
 	config.options().header("For help and support visit please: http://bit.ly/bogbukkitdev or http://bit.ly/bogbukkit");
 	config.options().copyDefaults(true);
 	saveConfig();
+	enabledBlocks = config.getStringList("enabledBlocks");
     }
 
     // If no config is found, copy the default one(s)!

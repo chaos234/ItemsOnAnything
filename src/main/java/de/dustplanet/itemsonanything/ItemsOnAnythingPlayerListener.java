@@ -39,32 +39,36 @@ public class ItemsOnAnythingPlayerListener implements Listener {
 	if ((event.getAction() == Action.RIGHT_CLICK_AIR) && event.hasItem()) {
 	    Player player = event.getPlayer();
 	    List<Block> lastTwoTargetBlocks = player.getLastTwoTargetBlocks(null, 5);
-	    System.out.println(lastTwoTargetBlocks.toString());
-	    Block previousBlock = lastTwoTargetBlocks.get(0);
+	    final Block previousBlock = lastTwoTargetBlocks.get(0);
 	    Block targetBlock = lastTwoTargetBlocks.get(1);
+	    System.out.println("Block 1: " + previousBlock.getType().name());
+	    System.out.println("Block 2: " + targetBlock.getType().name());
 	    BlockFace face = targetBlock.getFace(previousBlock);
 	    if (plugin.enabledBlocks.contains(targetBlock.getType().name()) && previousBlock.getType() == Material.AIR) {
 		ItemStack item = event.getItem();
 		Material type = item.getType();
-		if (plugin.items.contains(type) && face == BlockFace.UP) {
+		if (plugin.items.contains(type.name())) {
 		    previousBlock.setType(type);
+		    // Special case is a lever, we have to adjust the bit values (facing)
+		    // Reference: http://www.minecraftwiki.net/wiki/Data_values#Levers
 		    if (type == Material.LEVER) {
-			Lever lever = new Lever();
-			System.out.println(face.getOppositeFace().name());
-			lever.setFacingDirection(face);
-			previousBlock.setType(lever.getItemType());
-			previousBlock.setData(lever.getData());
+			BlockFace playerDirection = Util.yawToFace(player.getLocation().getYaw());
+			if (playerDirection == BlockFace.SOUTH || playerDirection == BlockFace.NORTH) {
+			    if (face == BlockFace.UP) {
+				previousBlock.setData((byte) 0x5);
+			    } else if (face == BlockFace.DOWN) {
+				previousBlock.setData((byte) 0x7);
+			    }
+			} else if (playerDirection == BlockFace.EAST  || playerDirection == BlockFace.WEST) {
+			    if (face == BlockFace.UP) {
+				previousBlock.setData((byte) 0x6);
+			    } else if (face == BlockFace.DOWN) {
+				previousBlock.setData((byte) 0x0);
+			    }
+			}
 		    }
 		}
 		// reduceItemAmountIfNotCreativeMode(player, item);
-		else if (type == Material.LADDER && face != BlockFace.DOWN && face != BlockFace.UP) {
-		    Ladder ladder = new Ladder();
-		    ladder.setFacingDirection(face.getOppositeFace());
-		    previousBlock.setType(ladder.getItemType());
-		    previousBlock.setData(ladder.getData());
-		    // reduceItemAmountIfNotCreativeMode(player, item);
-		    // etc
-		}
 	    }
 	}
     }

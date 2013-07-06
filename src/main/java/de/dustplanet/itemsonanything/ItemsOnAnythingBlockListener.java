@@ -22,18 +22,15 @@ public class ItemsOnAnythingBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockPhysics(BlockPhysicsEvent event) {
-	System.out.println("start");
-	System.out.println(event.getBlock().getType().name());
-	System.out.println(event.getChangedType().name());
-	System.out.println("end");
-	System.out.println(" ");
-	if (plugin.enabledBlocks.contains(event.getBlock().getType().name()) || plugin.items.contains(event.getBlock().getType())) {
-	    System.out.println("here");
-	    if (plugin.items.contains(event.getChangedType()) || event.getChangedType() == Material.AIR) {
-		System.out.println("her2");
+	// Get our blocks and items
+	String blockName = event.getBlock().getType().name();
+	String changedTypeName = event.getChangedType().name();
+	// Our "base" block is enabled
+	if (plugin.enabledBlocks.contains(blockName) || plugin.items.contains(blockName)) {
+	    // Is our item on the list?
+	    if (plugin.items.contains(changedTypeName) || event.getChangedType() == Material.AIR) {
 		event.setCancelled(true);
 	    }
 	}
-	// System.out.println();
     }
 }
