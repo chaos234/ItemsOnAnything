@@ -1,6 +1,7 @@
 package de.dustplanet.itemsonanything;
 
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -11,14 +12,10 @@ public class Util {
     /**
      * Gets the horizontal Block Face from a given yaw angle
      * 
-     * @param yaw
-     *            angle
-     * @param useSubCardinalDirections
-     *            setting, True to allow NORTH_WEST to be returned
+     * @param yaw angle
      * @return The Block Face of the angle
      */
-    // Thanks to
-    // https://forums.bukkit.org/threads/get-the-direction-a-player-is-facing.105314/#post-1372240
+    // Thanks to https://forums.bukkit.org/threads/105314/#post-1372240
     public static BlockFace yawToFace(float yaw) {
 	return axis[Math.round(yaw / 90f) & 0x3];
     }
@@ -50,7 +47,7 @@ public class Util {
     public static Material translateItemToBlock(Material type) {
 	switch (type) {
 	case DIODE:
-	    type = Material.DIODE_BLOCK_ON;
+	    type = Material.DIODE_BLOCK_OFF;
 	    break;
 	case REDSTONE:
 	    type = Material.REDSTONE_WIRE;
@@ -59,7 +56,7 @@ public class Util {
 	    type = Material.BED_BLOCK;
 	    break;
 	case REDSTONE_COMPARATOR:
-	    type = Material.REDSTONE_COMPARATOR_ON;
+	    type = Material.REDSTONE_COMPARATOR_OFF;
 	    break;
 	case IRON_DOOR:
 	    type = Material.IRON_DOOR_BLOCK;
@@ -89,5 +86,20 @@ public class Util {
 	    break;
 	}
 	return type;
+    }
+
+    public static boolean noRedstoneConflict(Material blockType, Material changedType) {
+	// Case 1 our first block is redstone
+	if (blockType == Material.REDSTONE_WIRE) {
+	    if (changedType == Material.STONE_BUTTON) {
+		return false;
+	    }
+	}
+	if (changedType == Material.REDSTONE_WIRE) {
+	    if (blockType == Material.STONE_BUTTON) {
+		return false;
+	    }
+	}
+	return true;
     }
 }

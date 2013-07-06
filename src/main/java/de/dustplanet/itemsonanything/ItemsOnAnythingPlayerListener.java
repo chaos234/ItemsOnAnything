@@ -100,7 +100,7 @@ public class ItemsOnAnythingPlayerListener implements Listener {
 		    } else if (type == Material.STONE_BUTTON || type == Material.WOOD_BUTTON) {
 			// Special case is a button, we have to adjust the bit values (facing)
 			// Reference: http://www.minecraftwiki.net/wiki/Data_values#Buttons
-			// Ladders can't be placed if the face is UP or DOWN
+			// Buttons can't be placed if the face is UP or DOWN
 			if (face == BlockFace.UP || face == BlockFace.DOWN) {
 			    previousBlock.setType(Material.AIR);
 			    return;
@@ -125,8 +125,53 @@ public class ItemsOnAnythingPlayerListener implements Listener {
 		    } else if (type == Material.SAPLING || type == Material.LONG_GRASS) {
 			// We have to respect the different types of saplings/long grass
 			previousBlock.setData((byte) item.getDurability());
+		    } else if (type == Material.REDSTONE_COMPARATOR_OFF || type == Material.REDSTONE_COMPARATOR_ON
+			|| type == Material.DIODE_BLOCK_OFF || type == Material.DIODE_BLOCK_ON) {
+			// Special case is a button, we have to adjust the bit values (facing)
+			// Reference: http://www.minecraftwiki.net/wiki/Data_values#Redstone_Repeater
+			BlockFace playerDirection = Util.yawToFace(player.getLocation().getYaw());
+			switch (playerDirection) {
+			case EAST:
+			    previousBlock.setData((byte) 0x3);
+			    break;
+			case NORTH:
+			    previousBlock.setData((byte) 0x2);
+			    break;
+			case SOUTH:
+			    previousBlock.setData((byte) 0x0);
+			    break;
+			case WEST:
+			    previousBlock.setData((byte) 0x1);
+			    break;
+			default:
+			    break;
+			}
+		    } else if (type == Material.TRIPWIRE_HOOK) {
+			// Special case is a button, we have to adjust the bit values (facing)
+			// Reference: http://www.minecraftwiki.net/wiki/Data_values#Tripwire_Hook
+			// Tripwire hook can't be placed if the face is UP or DOWN
+			if (face == BlockFace.UP || face == BlockFace.DOWN) {
+			    previousBlock.setType(Material.AIR);
+			    return;
+			}
+			BlockFace playerDirection = Util.yawToFace(player.getLocation().getYaw());
+			switch (playerDirection) {
+			case EAST:
+			    previousBlock.setData((byte) 0x3);
+			    break;
+			case NORTH:
+			    previousBlock.setData((byte) 0x2);
+			    break;
+			case SOUTH:
+			    previousBlock.setData((byte) 0x0);
+			    break;
+			case WEST:
+			    previousBlock.setData((byte) 0x1);
+			    break;
+			default:
+			    break;
+			}
 		    }
-
 		}
 		decreaseItem(player, item);
 	    }

@@ -30,8 +30,11 @@ public class ItemsOnAnythingBlockListener implements Listener {
 	if (plugin.enabledBlocks.contains(blockName) || plugin.items.contains(blockName)) {
 	    // Is our item on the list?
 	    if (plugin.items.contains(changedTypeName) || event.getChangedType() == Material.AIR) {
-		System.out.println("cancel");
-		event.setCancelled(true);
+		// Make redstone work again
+		if (Util.noRedstoneConflict(event.getBlock().getType(), event.getChangedType())) {
+		    System.out.println("cancel");
+		    event.setCancelled(true);
+		}
 	    }
 	}
     }
