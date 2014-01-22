@@ -1,5 +1,5 @@
 name: ItemsOnAnything
 main: de.dustplanet.itemsonanything.ItemsOnAnything
 author: xGhOsTkiLLeRx
-website: ???
+website: http://dev.bukkit.org/bukkit-plugins/itemsonanything/
 version: ${project.version}-b${BUILD_NUMBER}
